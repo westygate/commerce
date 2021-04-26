@@ -1,0 +1,111 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% if message and success is True %}
+<div class="alertSuccess">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  {{message}}
+</div>
+{% endif %}
+{% if message and success is False %}
+<div class="alertFail">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  {{message}}
+</div>
+{% endif %}
+{% if message and success is None %}
+<div class="alertWin">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  {{message}}
+</div>
+{% endif %}
+<div class="contentListing">
+    <img src="{{listing.image}}" id="image_listing">
+    <div class="textListing">
+        <div class="item">
+            <div class="name">{{listing.name}}</div>
+        </div>
+
+         <div class="item">
+            <div id="buttons">
+                {% if watchlist %}        
+                <form action="{% url 'watchlist' id=listing.id action="remove" %}">
+                    <input class="btn_listing" type="submit" value="Remove Watchlist">
+                </form>
+                {% else %}  
+                 <form action="{% url 'watchlist' id=listing.id action="add" %}">
+                    <input class="btn_listing" type="submit" value="Watchlist">
+                </form>
+                 {% endif %}
+                 
+                {% if closeBtn %}        
+                <form action="{% url 'close' id=listing.id %}">
+                    <input class="btn_listing" type="submit" value="Close listing">
+                </form>
+                {% endif %}
+            </div>
+         </div>
+
+        <div class="item">
+            <div class="fullDescription">{{listing.description}}</div>
+        </div>
+
+        <div class="item">
+            <div class="label">Category:</div>
+            <div class="about">{{listing.category.name}}</div>
+        </div>
+        <div class="item">
+            <div class="label">Price:</div>
+            <div class="about">{{listing.price}}$</div>
+        </div>
+        <div class="item">
+            {% if user.is_authenticated and bid%}
+            <form class="bidForm" action="{% url 'listing' id=listing.id %}" method="POST" class="bid"> 
+                {% csrf_token %}
+                {{bid}}
+                <input class="save" name="bid" type="submit" value="Submit">
+            </form>
+            {% endif %}
+        </div>
+        <div class="item">
+            <div class="label">Listed by:</div>
+            <div class="about">{{listing.owner}}</div>
+        </div>
+        <div class="item">
+            <div class="create">Created {{listing.create}}</div>
+        </div>
+  
+
+    
+    </div>    
+</div>
+
+<div class="comment_section">
+    <h5>Comments</h5>
+    {% if user.is_authenticated%}
+    <form class="new_comment" action="{% url 'listing' id=listing.id %}" method="POST">
+        {% csrf_token %}
+        {{new_comment}}
+        <input class="save" name="comment" type="submit" value="Save">
+    </form>
+    {% endif %}
+    {% for comment in comments %}
+    <div class="comment">
+        <div class="comment_header">
+            <div class="comment_item">
+                <div class="comment_owner">{{comment.owner}}</div>
+            </div>
+            <div class="comment_item">
+                <div class="create">{{comment.create}}</div>
+            </div>
+        </div>
+        <div class="comment_item">{{comment.comment}}</div>
+    </div>
+    {% endfor %}
+    {% if not comments %}
+    <div class="comment">There are no comments yet</div>
+    {% endif %}
+    
+</div>    
+{% endblock %}

@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Auctions{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+    <h1>Auctions</h1>
+       <nav>
+         <ul class="refs">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'create' %}">Create Listing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'show_watchlist' %}">Watchlist</a>
+                </li>
+                {% endif %}
+
+         </ul>       
+           <ul class="topmenu">
+                {% if user.is_authenticated %}
+                    <li  id="user"><strong>{{ user.username }}&#9662;</strong>
+                        <ul class="submenu">
+                            <li class="menu-item"><a href="{% url 'logout' %}">Log Out</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li id="user"> <strong>Sign in&#9662;</strong>
+                        <ul class="submenu">
+                            <li><a href="{% url 'login' %}">Log In</a></li>
+                            <li><a href="{% url 'register' %}">Register</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+                </ul>
+            
+         </nav>    
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>

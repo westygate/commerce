@@ -1,0 +1,45 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Create Listing</h2>
+
+    <div class="createContainer">
+    <form class="createForm" action="{% url 'create' %}" method="post">
+        {% csrf_token %}
+        <div class="fieldWrapper">
+            {{ form.title.errors }}
+            <label>{{ form.title.label }}</label>
+            {{ form.title }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.description.errors }}
+            <label>{{ form.description.label }}</label>
+            {{ form.description }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.bid.errors }}
+            <label>{{ form.bid.label }}</label>
+            {{ form.bid }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.image.errors }}
+            <label>{{ form.image.label }}</label>
+            {{ form.image }}
+        </div>
+        <div class="fieldWrapper">
+            <label>Category</label>
+            <select name="category" >
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="fieldWrapper">
+            <button class="saveListing" type="submit" name="save">Save</button>
+        </div>
+    </form>
+
+  </div>
+
+{% endblock %}

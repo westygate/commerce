@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div class="listings">
+        {% for listing in listings %}
+        <div class="listing" onclick="location.href='listing/{{listing.id}}';">
+                <div class="content">
+                    <img src="{{listing.image}}" class="image">
+                    <div class="text">
+                        <div class="item"><div class="name">{{listing.name}}</div></div>
+                        <div class="item">
+                            <div class="description">{{listing.description}}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Price:</div>
+                            <div class="about">{{listing.price}}$</div>
+                        </div>
+                        <div class="item"><div class="create">Created {{listing.create}}</div></div>
+                    </div>
+                </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
